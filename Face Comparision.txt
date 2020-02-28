@@ -1,0 +1,36 @@
+import csv
+import boto3
+
+with open('credentials.csv', 'r') as input:
+    next(input)
+    reader=csv.reader(input)
+    for line in reader:
+        access_key_id=line[2]
+        secret_access_key=line[3]
+        
+photo1='opencv_frame_1.png'
+photo2='dirgh.jpg'
+
+client = boto3.client('rekognition',
+                     aws_access_key_id=access_key_id,
+                     aws_secret_access_key=secret_access_key,
+                     region_name='us-west-2')
+
+
+with open(photo1, 'rb') as source_image:
+    source_bytes=source_image.read()
+
+with open(photo2, 'rb') as target_image:
+    target_bytes=target_image.read()
+    
+    
+response=client.compare_faces(SourceImage={'Bytes': source_bytes},
+                             TargetImage={'Bytes': target_bytes}
+                             )
+
+for key, value in response.items():
+    if key in('FaceMatches','UnmatchedFaces'):
+        print (key)
+        for att in value:
+            print (att)
+        
