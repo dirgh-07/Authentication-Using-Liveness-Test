@@ -1,2 +1,2 @@
 # SGP2
-Software Group Project data.
+The project was part of my Software Group Project subject during my academics.
